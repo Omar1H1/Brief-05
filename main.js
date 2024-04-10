@@ -1,11 +1,29 @@
-import express from 'express'
+import express from "express";
+import pg from "pg";
 
-const app = express ();
+const app = express();
 
-console.log(app);
+const { Client } = pg;
 
-const port = 3000
+const client = new Client({
+  user: "postgres",
+  password: "postgres",
+  host: "localhost",
+  port: "5432",
+  database: "api",
+});
+
+client
+  .connect()
+  .then(() => {
+    console.log("Connected to PostgreSQL database");
+  })
+  .catch((err) => {
+    console.error("Error connecting to PostgreSQL database", err);
+  });
+
+const port = 3000;
 
 app.listen(port, () => {
-    console.log(`servier running on port ${port}`)
-})
+  console.log(`server running on port ${port}`);
+});
