@@ -1,28 +1,23 @@
 import express from "express";
-import pg from "pg";
+import client from "./utils/pg.js";
 
 const app = express();
+const port = process.env.PORT || 3000;
 
-const { Client } = pg;
+app.use(express.static('public'))
 
-const client = new Client({
-  user: "postgres",
-  password: "postgres",
-  host: "localhost",
-  port: "5432",
-  database: "api",
-});
-
-client
-  .connect()
-  .then(() => {
-    console.log("Connected to PostgreSQL database");
-  })
-  .catch((err) => {
+async function fetchData() {
+  try {
+    await client.connect();
+    const result = await client.query("SELECT * FROM users WHERE id = $1", [1]);
+    console.log(result.rows);
+  } catch (err) {
     console.error("Error connecting to PostgreSQL database", err);
-  });
+  }
+}
 
-const port = 3000;
+fetchData();
+
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
