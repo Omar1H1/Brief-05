@@ -1,9 +1,7 @@
-import pg from "pg";
+import pkg from "pg";
+const { Pool } = pkg;
 
-
-const { Client } = pg;
-
-const client = new Client({
+const pool = new Pool({
   user: "postgres",
   password: "postgres",
   host: "localhost",
@@ -11,4 +9,4 @@ const client = new Client({
   database: "api",
 });
 
-export default client;
+export default pool;

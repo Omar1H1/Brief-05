@@ -1,23 +1,20 @@
 import express from "express";
-import client from "./utils/pg.js";
+import session from "express-session";
+import auth_router from "./routers/auth.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
-app.use(express.static('public'))
+app.use(
+  session({
+    secret: "test",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
-async function fetchData() {
-  try {
-    await client.connect();
-    const result = await client.query("SELECT * FROM users WHERE id = $1", [1]);
-    console.log(result.rows);
-  } catch (err) {
-    console.error("Error connecting to PostgreSQL database", err);
-  }
-}
-
-fetchData();
-
+app.use(express.static("public"));
+app.use(auth_router);
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
