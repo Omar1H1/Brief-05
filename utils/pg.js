@@ -1,12 +1,6 @@
-import pkg from "pg";
-const { Pool } = pkg;
+import { neon } from "@neondatabase/serverless";
 
-const pool = new Pool({
-  user: "postgres",
-  password: "postgres",
-  host: "localhost",
-  port: "5432",
-  database: "api",
-});
+const sql = neon('postgresql://miniature_owner:6zKYmAZSQrW7@ep-icy-boat-a2z9nbde-pooler.eu-central-1.aws.neon.tech/miniature?sslmode=require');
 
-export default pool;
+
+export default sql;
